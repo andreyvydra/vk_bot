@@ -117,6 +117,7 @@ longpoll = VkLongPoll(vk)
 
 users = dict()
 
+<<<<<<< Updated upstream
 print("Server started")
 city_choice = False
 
@@ -178,3 +179,94 @@ for event in longpoll.listen():
 
             print('Text: ', event.text)
             print("-------------------")
+=======
+while True:
+    try:
+        vk = vk_api.VkApi(token=TOKEN)
+
+        longpoll = VkLongPoll(vk)
+
+        print("Server started")
+        city_choice = False
+
+        for event in longpoll.listen():
+
+            if event.type == VkEventType.MESSAGE_NEW:
+
+                if event.to_me:
+
+                    if event.user_id not in users:
+                        city = vk.method('users.get', {'user_id': event.user_id,
+                                                       'fields': ['city']})[0]
+                        if 'city' in city:
+                            if check_city(city['city']['title'].lower()):
+                                users[event.user_id] = city['city']['title']
+                            else:
+                                users[event.user_id] = 'Санкт-Петербург'
+                        else:
+                            users[event.user_id] = 'Санкт-Петербург'
+
+                    if city_choice:
+                        city_choice = False
+                        if not check_city(event.text.lower()):
+                            output_code(-1)
+                            write_incorrect_city(event.user_id)
+                        else:
+                            users[event.user_id] = event.text.lower()
+                            write_correct_city(event.user_id)
+                            write_weather_buttons(event.user_id)
+                    elif event.text.lower() in ['начать', 'инфо']:
+                        write_info(event.user_id)
+                        write_weather_buttons(event.user_id)
+                    elif event.text.lower() == 'погода':
+                        write_weather_buttons(event.user_id)
+                        output_code(1)
+                    elif event.text.lower() == 'ночь':
+                        write_msg_with_forecast(event.user_id, users[event.user_id], 3)
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    elif event.text.lower() == 'утро':
+                        write_msg_with_forecast(event.user_id, users[event.user_id], 9)
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    elif event.text.lower() == 'день':
+                        write_msg_with_forecast(event.user_id, users[event.user_id], 15)
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    elif event.text.lower() == 'вечер':
+                        write_msg_with_forecast(event.user_id, users[event.user_id], 21)
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    elif event.text.lower() == 'погода на весь день':
+                        write_msg_with_forecast(event.user_id, users[event.user_id])
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    elif event.text.lower() == 'выбрать город':
+                        write_city_choice(event.user_id)
+                        city_choice = True
+                    elif event.text.lower() == 'погода в реальном времени':
+                        write_msg_with_forecast(event.user_id, users[event.user_id], 26)
+                        output_code(1)
+                        write_thanks(event.user_id)
+                    else:
+                        output_code(0)
+                        write_incorrect_msg(event.user_id)
+                    '''elif True:
+                        city = vk.method('users.get', {'user_id': event.user_id, 'fields': ['city']})[0]['city']['title']
+                        write_msg(event.user_id, city)'''
+
+                    print('Text: ', event.text)
+                    print("-------------------")
+    except requests.exceptions.ReadTimeout:
+        print('VK server is down. Reconnecting...')
+        time.sleep(3)
+        f = open('log.txt', 'a')
+        f.write(f'{str(datetime.datetime.now())} connection lost\n')
+        f.close()
+    except requests.exceptions.ConnectionError:
+        print('VK server is down. Reconnecting...')
+        time.sleep(3)
+        f = open('log.txt', 'a')
+        f.write(f'{str(datetime.datetime.now())} connection error\n')
+        f.close()
+>>>>>>> Stashed changes
