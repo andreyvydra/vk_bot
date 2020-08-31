@@ -7,6 +7,7 @@ import json
 from weather import get_message
 import datetime
 import time
+import codecs
 from googletrans import Translator
 
 
@@ -136,18 +137,16 @@ def write_info(user_id):
                                 'random_id': vk_api.utils.get_random_id()})
 
 def read_database(users):
-    f = open('db.txt')
-    for line in f:
-        id, city = line[:-1].lower().split()
-        users[id] = city
-    f.close()
+    with codecs.open('db.txt', encoding="utf-8", errors="ignore") as f:
+        for line in f:
+            id, city = line[:-1].lower().split()
+            users[id] = city
 
 
 def write_database(users):
-    f = open('db.txt', 'w')
-    for key, val in users.items():
-        f.write(f'{key} {val}\n')
-    f.close()
+    with codecs.open('db.txt', encoding="utf-8", errors="ignore") as f:
+        for key, val in users.items():
+            f.write(f'{key} {val}\n')
 
 
 def check_city(city):
@@ -163,7 +162,7 @@ def output_code(code):
     print(f'Code: {code}')
 
 
-TOKEN = "ba6713c40627ba9281241f8b6471c205ef2947306d20d44fe234454b5352d4aecdac76d24ef7a11bbf3c9"
+TOKEN = "444f5f3539ec241675b60abf3b607520a75fbaab0c8db18f5df72ca8395f107e249dab8bf9577d06dac55"
 TEST_TOKEN = "ba6713c40627ba9281241f8b6471c205ef2947306d20d44fe234454b5352d4aecdac76d24ef7a11bbf3c9"
 
 
