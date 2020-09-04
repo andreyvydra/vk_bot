@@ -85,18 +85,21 @@ def write_msg_with_forecast(user_id, city, time=25):
 
 
 def write_thanks(user_id):
-    vk.method('messages.send', {'user_id': user_id, 'message': 'Спасибо за использование данного бота :)&#10084;\n'
-                                                               'Будем очень благодарны, если вы подпишитесь на'
-                                                               ' этот паблик &#128154;&#128154;&#128154;',
-              'random_id': vk_api.utils.get_random_id()}, get_keyboard())
+    vk.method('messages.send', {'user_id': user_id, 'message':
+        'Спасибо за использование данного бота :)&#10084;\n'
+        'Будем очень благодарны, если вы подпишитесь на этот паблик &#128154;&#128154;&#128154;\n'
+        'И поддержите проект здесь\nhttps://vk.com/app6471849_-198063169\n',
+                                'random_id': vk_api.utils.get_random_id()}, get_keyboard())
 
 
 def write_msg(user_id, city, time=3):
-    vk.method('messages.send', {'user_id': user_id, 'message': get_message(city, time), 'random_id': vk_api.utils.get_random_id()})
+    vk.method('messages.send',
+              {'user_id': user_id, 'message': get_message(city, time), 'random_id': vk_api.utils.get_random_id()})
 
 
 def write_weather_buttons(user_id):
-    vk.method('messages.send', {'user_id': user_id, 'message': 'Выберите время или город &#128336;&#127751;', 'keyboard': get_keyboard(True),
+    vk.method('messages.send', {'user_id': user_id, 'message': 'Выберите время или город &#128336;&#127751;',
+                                'keyboard': get_keyboard(True),
                                 'random_id': vk_api.utils.get_random_id()})
 
 
@@ -117,7 +120,8 @@ def write_incorrect_city(user_id):
 
 def write_correct_city(user_id):
     vk.method('messages.send', {'user_id': user_id, 'message': 'Город успешно изменён &#9989;&#127961;',
-                      'random_id': vk_api.utils.get_random_id()})
+                                'random_id': vk_api.utils.get_random_id()})
+
 
 def write_city_choice(user_id):
     vk.method('messages.send', {'user_id': user_id, 'message': 'Введите город или населённый пункт &#127747;',
@@ -129,18 +133,18 @@ def write_info(user_id):
                                                                ' подбираться под '
                                                                'город, который указан у тебя в профиле &#127747; \nН'
                                                                'о его всегда можно изменить &#9989;&#9989;&#9989; \nНиже представлен'
-                                                               'о его всегда можно изменить &#9989;&#9989;&#9989;\nНиже представлен'
                                                                ' список команд,'
                                                                ' которые ты можешь выполнить &#128172;\n'
                                                                '&#11015;&#11015;&#11015;&#11015;&#11015;&#11015;&#11015'
                                                                ';&#11015;&#11015;',
                                 'random_id': vk_api.utils.get_random_id()})
 
+
 def read_database(users):
     with codecs.open('db.txt', encoding="utf-8", errors="ignore") as f:
         for line in f:
             id, city = line[:-1].lower().split()
-            users[id] = city
+            users[int(id)] = city
 
 
 def write_database(users):
@@ -164,7 +168,6 @@ def output_code(code):
 
 TOKEN = "444f5f3539ec241675b60abf3b607520a75fbaab0c8db18f5df72ca8395f107e249dab8bf9577d06dac55"
 TEST_TOKEN = "ba6713c40627ba9281241f8b6471c205ef2947306d20d44fe234454b5352d4aecdac76d24ef7a11bbf3c9"
-
 
 users = dict()
 read_database(users)
