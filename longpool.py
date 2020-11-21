@@ -166,8 +166,8 @@ def output_code(code):
     print(f'Code: {code}')
 
 
-TOKEN = "444f5f3539ec241675b60abf3b607520a75fbaab0c8db18f5df72ca8395f107e249dab8bf9577d06dac55"
-TEST_TOKEN = "ba6713c40627ba9281241f8b6471c205ef2947306d20d44fe234454b5352d4aecdac76d24ef7a11bbf3c9"
+TOKEN = ""
+TEST_TOKEN = ""
 
 users = dict()
 read_database(users)
